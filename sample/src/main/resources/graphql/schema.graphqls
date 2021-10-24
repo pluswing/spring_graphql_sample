@@ -1,0 +1,76 @@
+type Query {
+    post(id: ID!): Post
+    posts: [Post]
+    postsByAuthor(author: String!): [Post]
+    postsByCategory(category: String!): [Post]
+    comments: [Comment]
+}
+
+type Post {
+    id: ID!
+    author: String!
+    category: String!
+    title: String!
+    content: String!
+    comments: [Comment]
+}
+
+type Comment {
+    id: ID!
+    name: String!
+    content: String!
+    createdAt: String!
+    post: Post
+}
+
+input NewPost {
+    author: String!
+    category: String!
+    title: String!
+    content: String!
+}
+
+type AddPostPayload {
+    success: Boolean!
+    post: Post
+}
+
+type DeletePostPayload {
+    success: Boolean!
+}
+
+input UpdatePost {
+    id: ID!
+    author: String
+    category: String
+    title: String
+    content: String
+}
+
+type UpdatePostPayload {
+    success: Boolean!
+    post: Post
+}
+
+input NewComment {
+    postId: ID!
+    name: String!
+    content: String!
+}
+
+type AddCommentPayload {
+    success: Boolean!
+    comment: Comment
+}
+
+type DeleteCommentPayload {
+    success: Boolean!
+}
+
+type Mutation {
+    addPost(post: NewPost!): AddPostPayload
+    deletePost(id: ID!): DeletePostPayload
+    updatePost(post: UpdatePost!): UpdatePostPayload
+    addComment(comment: NewComment!): AddCommentPayload
+    deleteComment(id: ID!): DeleteCommentPayload
+}
