@@ -31,60 +31,60 @@ import java.lang.Exception
 @Component
 class BlogService {
     @Autowired
-    private var postRepository: PostRepository? = null
+    private lateinit var postRepository: PostRepository
 
     @Autowired
-    private var commentRepository: CommentRepository? = null
+    private lateinit var commentRepository: CommentRepository
 
     constructor() {}
-    constructor(postRepository: PostRepository?, commentRepository: CommentRepository?) {
+    constructor(postRepository: PostRepository, commentRepository: CommentRepository) {
         this.postRepository = postRepository
         this.commentRepository = commentRepository
     }
 
     fun addPost(post: NewPost): Post {
-        return postRepository!!.save(post.toEntity())
+        return postRepository.save(post.toEntity())
     }
 
     @Throws(Exception::class)
     fun updatePost(post: UpdatePost): Post {
-        val p = postRepository!!.findById(post.id).orElse(null) ?: throw Exception("post not found.")
+        val p = postRepository.findById(post.id).orElse(null) ?: throw Exception("post not found.")
         post.overwrite(p)
-        return postRepository!!.save(p)
+        return postRepository.save(p)
     }
 
     fun deletePost(id: Long) {
-        postRepository!!.deleteById(id)
+        postRepository.deleteById(id)
     }
 
     @Throws(Exception::class)
     fun addComment(comment: NewComment): Comment {
-        val post = postRepository!!.findById(comment.postId).orElse(null) ?: throw Exception("post not found.")
+        val post = postRepository.findById(comment.postId).orElse(null) ?: throw Exception("post not found.")
         val c = comment.toEntity(post)
-        return commentRepository!!.save(c)
+        return commentRepository.save(c)
     }
 
     fun deleteComment(id: Long) {
-        commentRepository!!.deleteById(id)
+        commentRepository.deleteById(id)
     }
 
-    fun getPostById(id: Long): Post {
-        return postRepository!!.findById(id).orElse(null)!!
+    fun getPostById(id: Long): Post? {
+        return postRepository.findById(id).orElse(null)
     }
 
     fun allPost(): List<Post> {
-        return Lists.newArrayList(postRepository!!.findAll())
+        return Lists.newArrayList(postRepository.findAll())
     }
 
-    fun findPostByAuthor(author: String?): List<Post> {
-        return postRepository!!.findByAuthor(author)
+    fun findPostByAuthor(author: String): List<Post> {
+        return postRepository.findByAuthor(author)
     }
 
-    fun findPostByCategory(category: String?): List<Post> {
-        return postRepository!!.findByCategory(category)
+    fun findPostByCategory(category: String): List<Post> {
+        return postRepository.findByCategory(category)
     }
 
     fun allComment(): List<Comment> {
-        return Lists.newArrayList(commentRepository!!.findAll())
+        return Lists.newArrayList(commentRepository.findAll())
     }
 }
