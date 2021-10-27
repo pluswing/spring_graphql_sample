@@ -10,3 +10,13 @@ services:
       --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
+  front:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.front
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/app
+    tty: true
+
