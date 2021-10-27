@@ -24,7 +24,7 @@ class BlogController {
     private lateinit var service: BlogService
 
     @QueryMapping
-    fun post(@Argument id: Long): Post {
+    fun post(@Argument id: Long): Post? {
         return service.getPostById(id)
     }
 
