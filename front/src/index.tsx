@@ -3,10 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider, Client, dedupExchange, fetchExchange } from 'urql'
+import { cacheExchange } from '@urql/exchange-graphcache'
+
+const cache = cacheExchange({})
+
+const client = new Client({
+  url: 'http://localhost:8080',
+  exchanges: [dedupExchange, cache, fetchExchange],
+})
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider value={client}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
