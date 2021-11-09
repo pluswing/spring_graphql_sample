@@ -1,12 +1,5 @@
 import React from 'react'
-
-export interface Post {
-  id: number
-  author: string
-  category: string
-  title: string
-  content: string
-}
+import { Post } from '../generated/graphql'
 
 export const PostComponent = ({ post } : {post: Post}) => (
   <div>

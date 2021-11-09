@@ -1,0 +1,9 @@
+query posts {
+  posts {
+    id
+    author
+    category
+    title
+    content
+  }
+}
