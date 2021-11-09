@@ -5,9 +5,10 @@ import jp.co.pluswing.mysqlsample.sample.model.Comment
 
 data class NewComment(val postId: Long, val name: String, val content: String) {
     fun toEntity(post: Post): Comment {
+        val it = this
         return Comment(post).apply {
-            this.name = name
-            this.content = content
+            name = it.name
+            content = it.content
         }
     }
 }

@@ -18,5 +18,6 @@ services:
       - "3000:3000"
     volumes:
       - ./front:/app
+    working_dir: /app
     tty: true
 
