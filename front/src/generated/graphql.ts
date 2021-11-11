@@ -1,7 +1,5 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
-import { IntrospectionQuery } from 'graphql';
-
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -34,7 +32,7 @@ export type Comment = {
   createdAt: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  post?: Maybe<Post>;
+  post: Post;
 };
 
 export type DeleteCommentPayload = {
@@ -49,11 +47,11 @@ export type DeletePostPayload = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addComment?: Maybe<AddCommentPayload>;
-  addPost?: Maybe<AddPostPayload>;
-  deleteComment?: Maybe<DeleteCommentPayload>;
-  deletePost?: Maybe<DeletePostPayload>;
-  updatePost?: Maybe<UpdatePostPayload>;
+  addComment: AddCommentPayload;
+  addPost: AddPostPayload;
+  deleteComment: DeleteCommentPayload;
+  deletePost: DeletePostPayload;
+  updatePost: UpdatePostPayload;
 };
 
 
@@ -98,7 +96,7 @@ export type Post = {
   __typename?: 'Post';
   author: Scalars['String'];
   category: Scalars['String'];
-  comments?: Maybe<Array<Maybe<Comment>>>;
+  comments: Array<Comment>;
   content: Scalars['String'];
   id: Scalars['ID'];
   title: Scalars['String'];
@@ -106,11 +104,11 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
-  comments?: Maybe<Array<Maybe<Comment>>>;
-  post?: Maybe<Post>;
-  posts?: Maybe<Array<Maybe<Post>>>;
-  postsByAuthor?: Maybe<Array<Maybe<Post>>>;
-  postsByCategory?: Maybe<Array<Maybe<Post>>>;
+  comments: Array<Comment>;
+  post: Post;
+  posts: Array<Post>;
+  postsByAuthor: Array<Post>;
+  postsByCategory: Array<Post>;
 };
 
 
@@ -142,11 +140,22 @@ export type UpdatePostPayload = {
   success: Scalars['Boolean'];
 };
 
+export type CreatePostMutationVariables = Exact<{
+  author: Scalars['String'];
+  category: Scalars['String'];
+  title: Scalars['String'];
+  content: Scalars['String'];
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', addPost: { __typename?: 'AddPostPayload', post?: { __typename?: 'Post', id: string, author: string, category: string, title: string, content: string } | null | undefined } };
+
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts?: Array<{ __typename?: 'Post', id: string, author: string, category: string, title: string, content: string } | null | undefined> | null | undefined };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, author: string, category: string, title: string, content: string }> };
 
+import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
     "queryType": {
@@ -262,9 +271,12 @@ export default {
           {
             "name": "post",
             "type": {
-              "kind": "OBJECT",
-              "name": "Post",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Post",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -314,9 +326,12 @@ export default {
           {
             "name": "addComment",
             "type": {
-              "kind": "OBJECT",
-              "name": "AddCommentPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AddCommentPayload",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -334,9 +349,12 @@ export default {
           {
             "name": "addPost",
             "type": {
-              "kind": "OBJECT",
-              "name": "AddPostPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AddPostPayload",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -354,9 +372,12 @@ export default {
           {
             "name": "deleteComment",
             "type": {
-              "kind": "OBJECT",
-              "name": "DeleteCommentPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "DeleteCommentPayload",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -374,9 +395,12 @@ export default {
           {
             "name": "deletePost",
             "type": {
-              "kind": "OBJECT",
-              "name": "DeletePostPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "DeletePostPayload",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -394,9 +418,12 @@ export default {
           {
             "name": "updatePost",
             "type": {
-              "kind": "OBJECT",
-              "name": "UpdatePostPayload",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UpdatePostPayload",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -443,11 +470,17 @@ export default {
           {
             "name": "comments",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Comment",
-                "ofType": null
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Comment",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": []
@@ -495,11 +528,17 @@ export default {
           {
             "name": "comments",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Comment",
-                "ofType": null
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Comment",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": []
@@ -507,9 +546,12 @@ export default {
           {
             "name": "post",
             "type": {
-              "kind": "OBJECT",
-              "name": "Post",
-              "ofType": null
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Post",
+                "ofType": null
+              }
             },
             "args": [
               {
@@ -527,11 +569,17 @@ export default {
           {
             "name": "posts",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Post",
-                "ofType": null
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Post",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": []
@@ -539,11 +587,17 @@ export default {
           {
             "name": "postsByAuthor",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Post",
-                "ofType": null
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Post",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": [
@@ -562,11 +616,17 @@ export default {
           {
             "name": "postsByCategory",
             "type": {
-              "kind": "LIST",
+              "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Post",
-                "ofType": null
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Post",
+                    "ofType": null
+                  }
+                }
               }
             },
             "args": [
@@ -621,6 +681,25 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const CreatePostDocument = gql`
+    mutation CreatePost($author: String!, $category: String!, $title: String!, $content: String!) {
+  addPost(
+    post: {author: $author, category: $category, title: $title, content: $content}
+  ) {
+    post {
+      id
+      author
+      category
+      title
+      content
+    }
+  }
+}
+    `;
+
+export function useCreatePostMutation() {
+  return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
 export const PostsDocument = gql`
     query posts {
   posts {

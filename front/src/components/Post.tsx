@@ -1,7 +1,7 @@
 import React from 'react'
-import { Post } from '../generated/graphql'
+import { PostsQuery } from '../generated/graphql'
 
-export const PostComponent = ({ post } : {post: Post}) => (
+export const PostComponent = ({ post } : {post: PostsQuery["posts"][number]}) => (
   <div>
     <div>
       {post.title} ({post.category})

@@ -1,9 +1,9 @@
 type Query {
-    post(id: ID!): Post
-    posts: [Post]
-    postsByAuthor(author: String!): [Post]
-    postsByCategory(category: String!): [Post]
-    comments: [Comment]
+    post(id: ID!): Post!
+    posts: [Post!]!
+    postsByAuthor(author: String!): [Post!]!
+    postsByCategory(category: String!): [Post!]!
+    comments: [Comment!]!
 }
 
 type Post {
@@ -12,7 +12,7 @@ type Post {
     category: String!
     title: String!
     content: String!
-    comments: [Comment]
+    comments: [Comment!]!
 }
 
 type Comment {
@@ -20,7 +20,7 @@ type Comment {
     name: String!
     content: String!
     createdAt: String!
-    post: Post
+    post: Post!
 }
 
 input NewPost {
@@ -68,9 +68,9 @@ type DeleteCommentPayload {
 }
 
 type Mutation {
-    addPost(post: NewPost!): AddPostPayload
-    deletePost(id: ID!): DeletePostPayload
-    updatePost(post: UpdatePost!): UpdatePostPayload
-    addComment(comment: NewComment!): AddCommentPayload
-    deleteComment(id: ID!): DeleteCommentPayload
+    addPost(post: NewPost!): AddPostPayload!
+    deletePost(id: ID!): DeletePostPayload!
+    updatePost(post: UpdatePost!): UpdatePostPayload!
+    addComment(comment: NewComment!): AddCommentPayload!
+    deleteComment(id: ID!): DeleteCommentPayload!
 }

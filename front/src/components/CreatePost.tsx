@@ -1,29 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import gql from 'graphql-tag';
-import { useMutation } from 'urql';
+import { useCreatePostMutation } from '../generated/graphql';
 
-const CREATE_POST = gql`
-mutation CreatePost(
-  $author: String!,
-  $category: String!,
-  $title: String!,
-  $content: String!) {
-  addPost(post: {
-    author: $author,
-    category: $category,
-    title: $title,
-    content: $content,
-  }) {
-    post {
-      id
-      author
-      category
-      title
-      content
-    }
-  }
-}
-`
 
 const CreatePost = (props: any) => {
   const [author, setAuthor] = useState('')
@@ -31,7 +8,7 @@ const CreatePost = (props: any) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  const [state, executeMutation] = useMutation(CREATE_POST)
+  const [state, executeMutation] = useCreatePostMutation()
 
   const submit = useCallback(() => {
     executeMutation({ author, category, title, content })

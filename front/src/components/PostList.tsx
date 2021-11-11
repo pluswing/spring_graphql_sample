@@ -1,5 +1,5 @@
 import React from 'react'
-import { usePostsQuery } from '../generated/graphql'
+import { Post, usePostsQuery } from '../generated/graphql'
 import {PostComponent} from './Post'
 
 const PostList = () => {
@@ -9,10 +9,10 @@ const PostList = () => {
   if (fetching) return <div>Fetching</div>
   if (error) return <div>Error</div>
 
-  const postsToRender = data!.posts!
+  const postsToRender = data!.posts
   return (
     <div>
-      {postsToRender.map(post => <PostComponent key={post!.id} post={post!} />)}
+      {postsToRender.map(post => <PostComponent key={post.id} post={post} />)}
     </div>
   )
 }
