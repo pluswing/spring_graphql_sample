@@ -1,6 +1,6 @@
 import React from 'react'
-import { Post, usePostsQuery } from '../generated/graphql'
-import {PostComponent} from './Post'
+import { usePostsQuery } from '../generated/graphql'
+import { Link } from 'react-router-dom'
 
 const PostList = () => {
   const [result] = usePostsQuery();
@@ -12,7 +12,16 @@ const PostList = () => {
   const postsToRender = data!.posts
   return (
     <div>
-      {postsToRender.map(post => <PostComponent key={post.id} post={post} />)}
+      {postsToRender.map(post => (
+      <div>
+        <div>
+          {post.title} ({post.category})
+          <Link to={`/posts/${post.id}`} className="ml1 no-underline black">
+            detail
+          </Link>
+        </div>
+      </div>
+      ))}
     </div>
   )
 }

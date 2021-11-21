@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 import * as Urql from 'urql';
+import { IntrospectionQuery } from 'graphql';
+
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -140,6 +142,15 @@ export type UpdatePostPayload = {
   success: Scalars['Boolean'];
 };
 
+export type CreateCommentMutationVariables = Exact<{
+  postId: Scalars['ID'];
+  name: Scalars['String'];
+  content: Scalars['String'];
+}>;
+
+
+export type CreateCommentMutation = { __typename?: 'Mutation', addComment: { __typename?: 'AddCommentPayload', comment?: { __typename?: 'Comment', id: string, name: string, content: string, createdAt: string } | null | undefined } };
+
 export type CreatePostMutationVariables = Exact<{
   author: Scalars['String'];
   category: Scalars['String'];
@@ -150,12 +161,18 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'Mutation', addPost: { __typename?: 'AddPostPayload', post?: { __typename?: 'Post', id: string, author: string, category: string, title: string, content: string } | null | undefined } };
 
+export type PostQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PostQuery = { __typename?: 'Query', post: { __typename?: 'Post', id: string, author: string, category: string, title: string, content: string, comments: Array<{ __typename?: 'Comment', name: string, content: string, createdAt: string }> } };
+
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, author: string, category: string, title: string, content: string }> };
 
-import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
     "queryType": {
@@ -681,6 +698,22 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const CreateCommentDocument = gql`
+    mutation CreateComment($postId: ID!, $name: String!, $content: String!) {
+  addComment(comment: {postId: $postId, name: $name, content: $content}) {
+    comment {
+      id
+      name
+      content
+      createdAt
+    }
+  }
+}
+    `;
+
+export function useCreateCommentMutation() {
+  return Urql.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument);
+};
 export const CreatePostDocument = gql`
     mutation CreatePost($author: String!, $category: String!, $title: String!, $content: String!) {
   addPost(
@@ -699,6 +732,26 @@ export const CreatePostDocument = gql`
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const PostDocument = gql`
+    query post($id: ID!) {
+  post(id: $id) {
+    id
+    author
+    category
+    title
+    content
+    comments {
+      name
+      content
+      createdAt
+    }
+  }
+}
+    `;
+
+export function usePostQuery(options: Omit<Urql.UseQueryArgs<PostQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostQuery>({ query: PostDocument, ...options });
 };
 export const PostsDocument = gql`
     query posts {

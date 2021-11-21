@@ -1,0 +1,17 @@
+mutation CreateComment(
+  $postId: ID!,
+  $name: String!,
+  $content: String!) {
+  addComment(comment: {
+    postId: $postId,
+    name: $name,
+    content: $content,
+  }) {
+    comment {
+      id
+      name
+      content
+      createdAt
+    }
+  }
+}
